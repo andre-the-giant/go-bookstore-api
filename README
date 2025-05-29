@@ -1,13 +1,12 @@
-<p align="center">
+
+<div align="center">
     <img src="https://raw.githubusercontent.com/golang-samples/gopher-vector/master/gopher.svg" alt="Go Gopher" width="120"/>
-</p>
+</div>
 
-<h1 align="center">I'm learning GO!</h1>
+# I'm learning GO!
 
-<p align="center">
-    This repository contains all the files I'm using to learn Go.<br>
-    Nothing fancy... just a tutorial! 🚀
-</p>
+This repository contains all the files I'm using to learn Go.  
+Nothing fancy... just a tutorial! 🚀
 
 ---
 
@@ -20,7 +19,6 @@ This project is a collection of code samples, experiments, and tutorials as I ex
 - Simple Go code examples
 - API experiments
 - Notes and learning resources
-
 
 ## 📚 Resources
 
