@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   db:
@@ -9,28 +9,20 @@ services:
       MYSQL_DATABASE: bookstore
     ports:
       - "3306:3306"
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
     volumes:
       - db-data:/var/lib/mysql
-      - api-init:/docker-entrypoint-initdb.d:ro 
+      - api-init:/docker-entrypoint-initdb.d:ro
+
   api:
     build: .
-    restart: on-failure
-    depends_on:
-      db:
-        condition: service_healthy
+    ports:
+      - "8989:8080"
     environment:
       DB_DSN: root:secret@tcp(db:3306)/bookstore
     volumes:
-      - api-init:/init-export:ro 
+      - api-init:/init-export
     command: >
       sh -c "cp /app/init.sql /init-export/init.sql && ./server"
-    ports:
-      - "8989:8080"
 
 volumes:
   db-data:
