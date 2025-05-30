@@ -3,10 +3,12 @@ package main
 import (
 	"database/sql"
 	"log"
-
-	"github.com/gin-gonic/gin"
+	"os"
 
 	"go-bookstore-api/routes"
+
+	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -15,7 +17,10 @@ var db *sql.DB
 
 func initDB() {
 	var err error
-	dsn := "root:secret@tcp(127.0.0.1:3306)/bookstore"
+	dsn := os.Getenv("DB_DSN") // use env var
+	if dsn == "" {
+		log.Fatal("❌ Missing required environment variable: DB_DSN")
+	}
 
 	db, err = sql.Open("mysql", dsn)
 	if err != nil {
@@ -30,6 +35,10 @@ func initDB() {
 }
 
 func main() {
+	if err := godotenv.Load(); err != nil {
+		log.Println("⚠️ No .env file found")
+	}
+
 	initDB()
 
 	router := gin.Default()
