@@ -1,11 +1,12 @@
-FROM golang:1.22
+FROM golang:1.24
 
 WORKDIR /app
 
-COPY go.mod go.sum ./
-RUN go mod download
+# Clone your public repo
+RUN apt-get update && apt-get install -y git \
+  && git clone https://github.com/andre-the-giant/go-bookstore-api.git . \
+  && go mod tidy
 
-COPY . .
 
 RUN go build -o server .
 

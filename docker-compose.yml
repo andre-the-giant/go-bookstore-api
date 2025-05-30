@@ -9,17 +9,24 @@ services:
       MYSQL_DATABASE: bookstore
     ports:
       - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - db-data:/var/lib/mysql
 
   api:
     build: .
+    restart: on-failure
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       DB_DSN: root:secret@tcp(db:3306)/bookstore
     ports:
-      - "8080:8080"
+      - "8989:8989"
 
 volumes:
   db-data:
