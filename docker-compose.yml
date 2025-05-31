@@ -1,36 +1,37 @@
 services:
+  git:
+    image: alpine
+    volumes:
+      - shared-code:/repo
+    command: >
+      sh -c "apk add --no-cache git && git clone --depth=1 https://github.com/andre-the-giant/go-bookstore-api.git /repo"
+
   db:
     image: mysql:8
-    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: bookstore
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 5s
-      timeout: 3s
-      retries: 5
-
     ports:
       - "3306:3306"
     volumes:
       - db-data:/var/lib/mysql
-      - api-init:/docker-entrypoint-initdb.d:ro
+      - shared-code:/docker-entrypoint-initdb.d:ro
+    depends_on:
+      - git
 
   api:
-    depends_on:
-      db:
-        condition: service_healthy
-    build: .
+    image: golang:1.24
+    working_dir: /repo
+    command: sh -c "go mod tidy && go build -o server . && ./server"
+    volumes:
+      - shared-code:/repo
     ports:
       - "8989:8080"
     environment:
       DB_DSN: root:secret@tcp(db:3306)/bookstore
-    volumes:
-      - api-init:/init-export
-    command: >
-      sh -c "cp /app/init.sql /init-export/init.sql && ./server"
+    depends_on:
+      - db
 
 volumes:
   db-data:
-  api-init:
+  shared-code:
