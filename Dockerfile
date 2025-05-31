@@ -1,20 +1,23 @@
 FROM golang:1.24 AS builder
 
-WORKDIR /app
+# WORKDIR can be anything
+WORKDIR /go/src/app
 
-# Clone from GitHub
+# Clone from your public GitHub repo
 RUN apt-get update && apt-get install -y git \
-  && git clone https://github.com/andre-the-giant/go-bookstore-api.git . \
+  && git clone https://github.com/andre-the-giant/go-bookstore-api.git /repo \
+  && ls -l /repo \
+  && cd /repo \
   && go mod tidy \
-  && go build -o server .
+  && go build -o /go/bin/server /repo/main.go
 
 # Final image
 FROM golang:1.24
 
 WORKDIR /app
 
-# Copy compiled binary and init.sql from builder
-COPY --from=builder /app/server .
-COPY --from=builder /app/init.sql .
+# Copy the binary and the init.sql
+COPY --from=builder /go/bin/server .
+COPY --from=builder /repo/init.sql .
 
 CMD ["./server"]
