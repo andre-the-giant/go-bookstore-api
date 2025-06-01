@@ -15,9 +15,10 @@ func SetupRoutes(router *gin.Engine, db *sql.DB) {
 	router.GET("/books/:id", handlers.GetBookByID(db))
 	router.POST("/books", handlers.PostBook(db))
 	router.PATCH("/books/:id", handlers.UpdateQuantity(db))
+	router.DELETE("/books/:id", handlers.DeleteBook(db))
 
-	router.POST("/register", handlers.Register(db))
-	router.POST("/login", handlers.Login(db))
+	router.POST("/register", handlers.Register)
+	router.POST("/login", handlers.Login)
 }
 
 func loggerMiddleware() gin.HandlerFunc {
