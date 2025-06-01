@@ -81,3 +81,6 @@ func Login(db *sql.DB) gin.HandlerFunc {
 		c.JSON(http.StatusOK, gin.H{"token": tokenString})
 	}
 }
+func Logout(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"message": "You have been logged out. Please delete the token client-side."})
+}

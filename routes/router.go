@@ -13,6 +13,7 @@ func SetupRoutes(router *gin.Engine, db *sql.DB) {
 	router.Use(middleware.LoggerMiddleware())
 	router.POST("/register", handlers.Register(db))
 	router.POST("/login", handlers.Login(db))
+	router.POST("/logout", handlers.Logout)
 	authorized := router.Group("/")
 	authorized.Use(middleware.AuthMiddleware())
 	{
