@@ -3,8 +3,9 @@ package routes
 import (
 	"database/sql"
 
-	"github.com/gin-gonic/gin"
 	"go-bookstore-api/handlers"
+
+	"github.com/gin-gonic/gin"
 )
 
 func SetupRoutes(router *gin.Engine, db *sql.DB) {
@@ -14,7 +15,9 @@ func SetupRoutes(router *gin.Engine, db *sql.DB) {
 	router.GET("/books/:id", handlers.GetBookByID(db))
 	router.POST("/books", handlers.PostBook(db))
 	router.PATCH("/books/:id", handlers.UpdateQuantity(db))
-	router.DELETE("/books/:id", handlers.DeleteBook(db))
+
+	router.POST("/register", handlers.Register(db))
+	router.POST("/login", handlers.Login(db))
 }
 
 func loggerMiddleware() gin.HandlerFunc {

@@ -21,3 +21,9 @@ INSERT INTO books (title, author, quantity) VALUES
 ('Go for DevOps', 'Josh Armitage', 2),
 ('Go in Action, Second Edition', 'William Kennedy', 1),
 ('Introducing Go', 'Caleb Doxsey', 5);
+
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL
+);
