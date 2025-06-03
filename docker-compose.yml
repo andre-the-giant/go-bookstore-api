@@ -34,7 +34,7 @@ services:
     command:
       [
         "-path", "/repo/migrations",
-        "-database", "mysql://root:secret@tcp(mysql:3306)/books?multiStatements=true",
+        "-database", "mysql://root:secret@tcp(mysql:3306)/bookstore?multiStatements=true",
         "up"
       ]
     volumes:
