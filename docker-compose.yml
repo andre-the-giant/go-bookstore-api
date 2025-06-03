@@ -33,13 +33,12 @@ services:
         condition: service_completed_successfully
     command:
       [
-        "-path", "/migrations",
+        "-path", "/repo/migrations",
         "-database", "mysql://root:secret@tcp(mysql:3306)/books?multiStatements=true",
         "up"
       ]
     volumes:
       - repo:/repo              
-      - /repo/migrations:/migrations
 
   api:
     image: golang:1.24
