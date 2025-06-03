@@ -1,4 +1,4 @@
-const API_BASE = '/api';
+const API_BASE = 'http://localhost:8989';
 
 function App() {
   const [token, setToken] = React.useState(sessionStorage.getItem('token'));

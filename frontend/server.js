@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const PORT = 3000;
-const API_HOST = 'api';
+const API_HOST = 'http://localhost';
 const API_PORT = 8989;
 
 const MIME_TYPES = {
