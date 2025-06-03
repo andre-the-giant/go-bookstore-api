@@ -1,37 +1,58 @@
+volumes:
+  repo:      
+  db_data:   
+
 services:
   git:
-    image: alpine
+    image: alpine/git:latest
+    command: ["clone", "--depth", "1", "https://github.com/andre-the-giant/go-bookstore-api.git", "/repo"]
     volumes:
-      - shared-code:/repo
-    command: >
-      sh -c "apk add --no-cache git && git clone --depth=1 https://github.com/andre-the-giant/go-bookstore-api.git /repo"
+      - repo:/repo
 
-  db:
+  mysql:
     image: mysql:8
     environment:
       MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: bookstore
+      MYSQL_DATABASE: books
     ports:
       - "3306:3306"
     volumes:
-      - db-data:/var/lib/mysql
-      - shared-code:/docker-entrypoint-initdb.d:ro
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  migrate:
+    image: migrate/migrate:latest
     depends_on:
-      - git
+      mysql:
+        condition: service_healthy
+      git:
+        condition: service_completed_successfully
+    command:
+      [
+        "-path", "/migrations",
+        "-database", "mysql://root:secret@tcp(mysql:3306)/books?multiStatements=true",
+        "up"
+      ]
+    volumes:
+      - repo:/repo              
+      - /repo/migrations:/migrations
 
   api:
     image: golang:1.24
-    working_dir: /repo
-    command: sh -c "go mod tidy && go build -o server . && ./server"
-    volumes:
-      - shared-code:/repo
-    ports:
-      - "8989:8080"
-    environment:
-      DB_DSN: root:secret@tcp(db:3306)/bookstore
     depends_on:
-      - db
-
-volumes:
-  db-data:
-  shared-code:
+      mysql:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+      git:
+        condition: service_completed_successfully
+    working_dir: /app
+    volumes:
+      - repo:/app      
+    ports:
+      - "8989:8080"           
+    command: sh -c "go mod tidy && go build -o server . && ./server"
