@@ -25,3 +25,14 @@ This project is a collection of code samples, experiments, and tutorials as I ex
 - [Go Official Website](https://golang.org/)
 - [Go by Example](https://gobyexample.com/)
 - [A Tour of Go](https://tour.golang.org/)
+
+## Database Migrations
+
+This project uses [golang-migrate](https://github.com/golang-migrate/migrate) to manage database schema changes. Install the CLI with:
+
+```bash
+go install github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+```
+
+Migration scripts live in the `migrations` directory. The initial migration sets up the `books` and `users` tables with seed data.
+
