@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"database/sql"
+	"go-bookstore-api/models"
 	"net/http"
 	"os"
 	"time"
@@ -15,10 +16,7 @@ var jwtSecret = []byte(os.Getenv("JWT_SECRET"))
 
 func Register(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var input struct {
-			Email    string `json:"email"`
-			Password string `json:"password"`
-		}
+		var input models.UserInput
 		if err := c.BindJSON(&input); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
 			return
@@ -41,10 +39,7 @@ func Register(db *sql.DB) gin.HandlerFunc {
 }
 func Login(db *sql.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var input struct {
-			Email    string `json:"email"`
-			Password string `json:"password"`
-		}
+		var input models.UserInput
 		if err := c.BindJSON(&input); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
 			return
