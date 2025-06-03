@@ -11,6 +11,7 @@ import (
 
 func SetupRoutes(router *gin.Engine, db *sql.DB) {
 	router.Use(middleware.LoggerMiddleware())
+	router.Use(middleware.CORSMiddleware())
 	router.POST("/register", handlers.Register(db))
 	router.POST("/login", handlers.Login(db))
 	router.POST("/logout", handlers.Logout)
