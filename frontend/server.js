@@ -4,7 +4,7 @@ const path = require('path');
 
 const PORT = 3000;
 const API_HOST = 'api';
-const API_PORT = 8080;
+const API_PORT = 8989;
 
 const MIME_TYPES = {
   '.html': 'text/html',
