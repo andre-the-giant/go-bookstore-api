@@ -36,3 +36,15 @@ go install github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 
 Migration scripts live in the `migrations` directory. The initial migration sets up the `books` and `users` tables with seed data.
 
+
+## Frontend
+
+A minimal React and Tailwind interface lives in the `frontend` directory. It is served from a Node container and sends requests directly to the Go API running on port `8989`.
+
+Start all services with:
+
+```bash
+docker compose up
+```
+
+Visit [http://localhost:3000](http://localhost:3000) to access the UI.
