@@ -55,5 +55,5 @@ services:
     ports:
       - "8989:8080"           
     environment:
-      DB_DSN: root:secret@tcp(db:3306)/bookstore
+      DB_DSN: root:secret@tcp(mysql:3306)/bookstore
     command: sh -c "go mod tidy && go build -o server . && ./server"
