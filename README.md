@@ -47,4 +47,12 @@ Start all services with:
 docker compose up
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) to access the UI.
+Create a `.env` file to adjust the proxy settings used by the frontend server:
+
+```
+API_HOST=api
+API_PORT=8080
+PORT=3000
+```
+
+Visit `http://localhost:3000` (or whichever `PORT` you choose) to access the UI.

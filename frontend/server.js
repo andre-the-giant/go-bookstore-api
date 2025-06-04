@@ -2,9 +2,24 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const PORT = 3000;
-const API_HOST = 'http://localhost';
-const API_PORT = 8989;
+// Load environment variables from a local .env if present
+[path.join(__dirname, '.env'), path.join(__dirname, '..', '.env')].forEach((p) => {
+  if (fs.existsSync(p)) {
+    fs.readFileSync(p, 'utf-8')
+      .split(/\n/)
+      .forEach((line) => {
+        const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)\s*$/);
+        if (match) {
+          const [, key, value] = match;
+          if (!process.env[key]) process.env[key] = value;
+        }
+      });
+  }
+});
+
+const PORT = process.env.PORT || 3000;
+const API_HOST = process.env.API_HOST || 'api';
+const API_PORT = process.env.API_PORT || 8080;
 
 const MIME_TYPES = {
   '.html': 'text/html',
@@ -58,5 +73,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`Frontend running on http://localhost:${PORT}`);
+  console.log(`Frontend running on port ${PORT}`);
 });

@@ -68,4 +68,8 @@ services:
       - ./frontend:/app
     ports:
       - "3000:3000"
+    environment:
+      API_HOST: api
+      API_PORT: 8080
+      PORT: 3000
     command: node server.js
